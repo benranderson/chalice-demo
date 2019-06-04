@@ -4,8 +4,8 @@ app = Chalice(app_name="chalice-demo")
 app.debug = True
 
 
-def water_pressure(h, rho=1025, g=9.81):
-    """Calculate the water pressure head.
+def calc_pressure(h, rho=1025, g=9.81):
+    """Calculate the water pressure at depth.
 
     Parameters
     ----------
@@ -30,15 +30,15 @@ def index():
 
 
 @app.route("/{depth}")
-def state_of_city(depth):
+def pressure(depth):
 
     try:
         h = float(depth)
     except ValueError:
         raise BadRequestError("Provide valid water depth.")
 
-    P = water_pressure(h)
-    # return {"pressure [Pa]": P}
+    P = calc_pressure(h)
+
     return Response(
         body=f"The water pressure at {h} m is {P} Pa.",
         status_code=200,
